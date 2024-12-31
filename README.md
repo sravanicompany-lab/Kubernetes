@@ -18,6 +18,81 @@ kubelet works as daemon service.kubelet will be responsible for all the containe
 
 kube-proxy:if we are mentioning the service type as nodeport or clusterport or loadbalancer,each and every pod is having some unique ip address that will be assigned by kube-proxy.
 
+Kubernetes Architecture: 
+
+Kubernetes consists of two main parts:
+1️⃣ Control Plane – The “brains” of Kubernetes, making decisions and managing the cluster.
+2️⃣ Worker Nodes – The “hands” of Kubernetes, where your applications (pods) actually run.
+
+
+Common Issues and How They Relate to Components
+
+📌Control Node Components
+
+🚀 1. API Server
+The API Server acts as the front desk for all Kubernetes operations.
+Common Issue:
+“kubectl commands are timing out.”
+Troubleshooting Tip:
+🛠 Check the API Server logs or test the connection using:
+kubectl get componentstatus.
+
+🚀 2. etcd
+The etcd is like Kubernetes’ memory, storing all cluster state information.
+Common Issue:
+“Cluster state is out of sync or lost.”
+Troubleshooting Tip:
+🛠 Monitor etcd health using etcdctl and ensure backup mechanisms are in place.
+
+🚀 3. Scheduler
+The Scheduler decides which node should run a pod.
+Common Issue:
+“Pods are stuck in a Pending state.”
+Troubleshooting Tip:
+🛠 Check node resource usage with:
+kubectl describe nodes.
+Scale up the cluster if necessary.
+
+🚀 4. Controller Manager
+The Controller Manager ensures the cluster’s desired state matches the actual state.
+Common Issue:
+“ReplicaSet isn’t creating the desired number of pods.”
+Troubleshooting Tip:
+🛠 Inspect controller logs and verify your deployment YAML files for errors.
+
+🚀 5. Cloud Controller Manager (CCM)
+The CCM integrates Kubernetes with cloud provider services like load balancers or storage.
+Common Issue:
+“Load balancer isn’t getting provisioned in the cloud.”
+Troubleshooting Tip:
+🛠 Verify cloud provider configurations and ensure proper IAM roles or credentials are set.
+
+📌Worker Node Components
+
+🚀 1. Kubelet
+The kubelet ensures containers within pods are running and healthy.
+Common Issue:
+“Pods keep restarting or crashing.”
+Troubleshooting Tip:
+🛠 Use:
+kubectl logs <pod> and kubectl describe pod <pod>
+to investigate pod events and container logs.
+
+🚀 2. Kube-proxy
+The kube-proxy manages networking within the cluster.
+Common Issue:
+“Pods can’t communicate with each other.”
+Troubleshooting Tip:
+🛠 Check network policies and ensure kube-proxy is running correctly.
+Test connectivity by pinging between pods.
+
+🚀 3. Container Runtime
+The container runtime (e.g., Docker or containerd) runs the containers within a pod.
+Common Issue:
+“Containers are stuck in a Created state.”
+Troubleshooting Tip:
+🛠 Check the runtime logs and ensure it’s properly installed and running on the node.
+
 KOPS - kubernetes operations,in the backend kops will try to create autoscaling groups if someone tries to delete our worker nodes or master nodes with the help of enhanced monitoring autoscaling group is going to create instances again.
 
 kops will apply keys to all the nodes
